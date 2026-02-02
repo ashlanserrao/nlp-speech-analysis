@@ -8,3 +8,4 @@ beautifulsoup4
 nltk
 spacy
 scikit-learn
+tqdm
