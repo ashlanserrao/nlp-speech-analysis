@@ -23,10 +23,32 @@ def replace_stage_directions(text: str) -> str:
 
     return text
 
+def strip_leading_title(text: str) -> str:
+    """
+    Remove a likely title
+    """
+    lines = text.split("\n")
+    if len(lines) == 0:
+        return text
+    
+    first_line = lines[0]
+
+    # Heuristic titles are short, capital heavy and contain year or colon
+
+    if (
+        len(first_line) < 150
+        and (":" in first_line or "(" in first_line)
+        and first_line.strip().istitle() or first_line.strip().isupper()
+    ):
+        return "\n".join(lines[1:]).strip()
+    
+    return text
+
 def basic_clean(text: str) -> str:
     """
     Safe cleaning that preserves meaning.
     """
+    text = strip_leading_title(text)
     text = normalize_whitespace(text)
     text = replace_stage_directions(text)
     return text
